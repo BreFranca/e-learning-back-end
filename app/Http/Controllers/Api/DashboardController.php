@@ -41,31 +41,25 @@ class DashboardController extends Controller
             $finish_courses = Dashboard::totalCoursesFinish()->count();
             $never_execute = $rank_courses->where('executes', 0)->count();
             $not_finish = Dashboard::notFinishCourses()->count();
+            
+        $data = array(
+            'leaderboard'=> $leaderboard,
+            'level' => $user->level,
+            'points' => $points,
+            'position' => $position,
+            'courses' => $latest_courses,
+            'latest_courses' => $latest_courses,
+            'latest_users' => $latest_users,
+            'total_courses' => $total_courses,
+            'total_users' => $total_users,
+            'user_never_execute' => $never_execute_user,
+            'rank_courses' => $rank_courses->toArray(),
+            'course_finish'=> $finish_courses,
+            'course_not_finish' => $not_finish,
+            'course_never_execute' => $never_execute,
+        );
 
-            return response()->json([
-                'id' => $user->id,
-                'courses' => $courses->toArray(),
-                'started' => $courses->where('progress','>',0)->toArray(),
-                'finished' => $courses->where('progress',100)->toArray(),
-                'certifications' => $certifications->toArray(),
-                'level' => $user->level,
-                'points' => $points,
-                'position' => $position,
-                'user_data' => [
-                    'ranking' => $leaderboard,
-                    'latest_users' => $latest_users,
-                    'total_users' => $total_users,
-                    'never_execute' => $never_execute_user,
-                ],
-                'course_data' => [
-                    'total_courses' => $total_courses,
-                    'latest_courses' => $latest_courses,
-                    'rank_courses' => $rank_courses,
-                    'finish'=> $finish_courses,
-                    'not_finish' => $not_finish,
-                    'never_execute' => $never_execute,
-                ],
-            ],200);
+        return response()->json($data, 200);
 
         //instructor
         }else if($user->role_id == 2){
@@ -85,37 +79,31 @@ class DashboardController extends Controller
                 $finished += $course->finished;
             }
 
-            return response()->json([
+            $data = array(
                 'id' => $user->id,
-                'courses' => $courses,
-                'started' => $courses->where('progress','>',0),
-                'finished' => $courses->where('progress',100),
-                'certifications' => $certifications,
-                'level' => $user->level,
-                'points' => $points,
-                'position' => $position,
-                'course_data' => [
-                    'mycourses' => $mycourses,
-                    'total' => $mycourses->count(),
-                    'started' => $started,
-                    'onGoing' => $onGoing,
-                    'finished' => $finished,
-                ],
-            ],200);
+                'courses' => $mycourses->toArray(),
+                'total' => $mycourses->count(),
+                'total_started' => $started,
+                'total_onGoing' => $onGoing,
+                'total_finished' => $finished,
+            );
+
+            return response()->json($data, 200);
 
         //student
         }else{
-
-            return response()->json([
+            $data = array(
                 'id' => $user->id,
-                'courses' => $courses,
-                'started' => $courses->where('progress','>',0),
-                'finished' => $courses->where('progress',100),
-                'certifications' => $certifications,
+                'courses' => $courses->toArray(),
+                'started' => $courses->where('progress','>',0)->toArray(),
+                'finished' => $courses->where('progress',100)->toArray(),
+                'certifications' => $certifications->toArray(),
                 'level' => $user->level,
                 'points' => $points,
                 'position' => $position,
-            ], 200);
+            );
+            
+            return response()->json($data, 200);
         }
     }
 
@@ -134,17 +122,20 @@ class DashboardController extends Controller
         $position = Dashboard::rankPosition($user->id);
         $leaderboard = Dashboard::leaderboard();
 
+        
+
         $data = array(
             'leaderboard'=> $leaderboard,
             'level' => $user->level,
             'points' => $points,
             'position' => $position,
-            'courses' => $courses,
+            'courses' => $latest_courses,
             'latest_courses' => $latest_courses,
             'latest_users' => $users,
             'totalCourses' => $totalCourses,
             'totalUsers' => $totalUsers
         );
+
         return response()->json($data, 200);
     }
 

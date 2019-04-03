@@ -16,26 +16,29 @@ class Dashboard extends Model
             $user->setAttribute('points', Point::total($user->id));
             $user->toArray();
         });
-
+        // $users = $users->sortByDesc('points');
         $users = $users->sortByDesc('points')->toArray();
+        
         return $users;
     }
 
     public static function latestCourses($n){
         $data = collect();
+        // $courses = Course::orderBy('id', 'desc')->take($n)->get();
         $courses = Course::orderBy('id', 'desc')->take($n)->get()->toArray();
 
         return $courses;
     }
 
     public static function latestUsers($n){
+        // $users = User::orderBy('id', 'desc')->take($n)->get();
         $users = User::orderBy('id', 'desc')->take($n)->get()->toArray();
 
         return $users;
     }
 
     public static function instructorCourses($user){
-        $courses = Course::where('user_id',$user)->orderBy('end_date')->get()->toArray();
+        $courses = Course::where('user_id',$user)->orderBy('end_date')->get();
         
         return $courses;
     }
@@ -48,6 +51,7 @@ class Dashboard extends Model
                     ->where('progress','>',0)
                     ->count();
             $course->SetAttribute('executes', $count);
+            $course->toArray();
         });
 
         $courses = $courses->sortByDesc('executes');

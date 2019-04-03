@@ -32,26 +32,7 @@ class Page extends React.Component {
     }
 
     getData = () => {
-        let role;
-        console.log(this.props.user.role_id)
-        switch (this.props.user.role_id) {
-            case '1':
-                role = 'admin'
-                break;
-            case '2':
-                role = 'instructor'
-                break;
-            case 1:
-                role = 'admin'
-                break;
-            case 2:
-                role = 'instructor'
-                break;
-            default:
-                role = 'student'
-                break;
-        }
-        axios.get(`${API_URL}/api/dashboard/${role}/${this.props.user.id}`)
+        axios.get(`${API_URL}/api/dashboard/${this.props.user.id}`)
             .then(res => {
                 const { data } = res;
                 console.log(data);
