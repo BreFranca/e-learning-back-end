@@ -131,14 +131,13 @@ class Page extends React.Component {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {console.log(users)}
-                                        {users.map((user, index) =>
+                                        {/* {users.map((user, index) =>
                                             <TableRow key={index}>
                                                 <TableCell>{user.name}</TableCell>
                                                 <TableCell>{user.points}</TableCell>
                                                 <TableCell>{user.level}</TableCell>
                                             </TableRow>
-                                        )}
+                                        )} */}
                                     </TableBody>
                                 </Table>
                             </Card>
