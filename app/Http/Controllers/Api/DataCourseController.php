@@ -20,21 +20,24 @@ class DataCourseController extends Controller
     public function index($user)
     {
         $mycourses = Course::userCourse($user)
-        ->where('view','=',1)
         ->where('progress','>', -1);
 
-        if($mycourses == null || $mycourses->isEmpty()){
+        if(!$mycourses){
             return response()->json(400);
             //400: Bad request. The standard option for requests that fail to pass validation.
         }else{
             foreach($mycourses as $mycourse){
-                if(Course::where('id', $mycourse->course_id)->exists()){
+                if(!Course::where('id', $mycourse->course_id)->exists()){
                     $mycourses->forget($mycourse);
                 }
             }
-            $mycourses->sortByDesc('id');
-            return response()->json($mycourses,200);
-            //200: OK. The standard success code and default option.
+            if(!$mycourses){
+                return response()->json(400);
+            }else{
+                $mycourses->sortByDesc('id');
+                return response()->json($mycourses,200);
+                //200: OK. The standard success code and default option.
+            }
         }
     }
 

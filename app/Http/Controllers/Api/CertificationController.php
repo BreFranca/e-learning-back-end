@@ -62,16 +62,14 @@ class CertificationController extends Controller
         $user = User::findOrFail($user);
         $course = Course::findOrFail($course);
 
-        //if($request->hasFile('image') && $request->file('image')->isValid()){
-            $certificate = Certification::create($request->All() + ['user_id' => $user->id, 'course_id' => $course->id]);
-            // Certification::uploadImageCertification($request, $certificate);
-            $t = Template::findOrFail(1);
+        if($request->hasFile('image') && $request->file('image')->isValid()){
+            $certificate = Certification::create(['user_id' => $user->id, 'course_id' => $course->id]);
+            Certification::uploadImageCertification($request, $certificate);
             
-            return response()->json(Storage::url($t->image),200);
-        //     return response()->json($certificate->id,200);
-        // }else {
-        //     return response()->json(400);
-        // }
+            return response()->json(Storage::url($certificate->image),200);
+        }else {
+            return response()->json(400);
+        }
     }
 
     public function user($user){

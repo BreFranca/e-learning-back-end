@@ -123,6 +123,7 @@ Route::post('teams/remove', 'Api\TeamController@remove');
 Route::resource('trails', 'Api\TrailController');
 
 //Dashboard routes
+Route::get('dashboard/{id}', 'Api\DashboardController@dashboard');
 Route::get('dashboard/admin/{id}', 'Api\DashboardController@admin');
 Route::get('dashboard/instructor/{id}', 'Api\DashboardController@instructor');
 Route::get('dashboard/student/{id}', 'Api\DashboardController@student');

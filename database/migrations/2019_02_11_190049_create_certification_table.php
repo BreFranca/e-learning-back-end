@@ -19,8 +19,8 @@ class CreateCertificationTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('course_id')->unsigned()->nullable();
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
-            $table->string('image');
-            $table->string('mime');
+            $table->string('image')->nullable();
+            $table->string('mime')->nullable();
             $table->timestamps();
         });
     }
